@@ -3,6 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'flask-app'
         REGISTRY = 'docker.io'
+        PATH = "${env.PATH}:/usr/local/bin" // Add Docker path permanently
     }
     stages {
         stage('Clone Repository') {
