@@ -3,13 +3,11 @@ pipeline {
     environment {
         IMAGE_NAME = 'flask-app'
         REGISTRY = 'docker.io'
-        PATH = "${env.PATH}:/usr/local/bin" // Add Docker path permanently
     }
     stages {
         stage('Clone Repository') {
             steps {
-                cleanWs() // Clean the workspace to avoid stale data
-                git branch: 'main', url: 'https://github.com/adhirk09/ci-cd-pipeline.git'
+                git 'https://github.com/adhirk09/ci-cd-pipeline.git'
             }
         }
         stage('Build Docker Image') {
@@ -23,7 +21,7 @@ pipeline {
             steps {
                 script {
                     docker.image("${REGISTRY}/${IMAGE_NAME}").inside {
-                        sh 'pytest' // Add your testing commands here
+                        sh 'pytest'  // Add any testing command if you have unit tests
                     }
                 }
             }
@@ -40,15 +38,8 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 script {
+                    // Deploy using your preferred method, e.g., AWS, Docker Hub, or a Kubernetes cluster.
                     echo 'Deploying the application...'
-                }
-            }
-        }
-        stage('Debug') {
-            steps {
-                script {
-                    sh 'git status'
-                    sh 'git branch -a'
                 }
             }
         }
