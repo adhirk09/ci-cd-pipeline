@@ -16,8 +16,8 @@ COPY . .
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# Define environment variable
-ENV NAME World
+# Set environment variable correctly
+ENV NAME=World
 
 # Run app.py when the container launches
 CMD ["python", "app/app.py"]
