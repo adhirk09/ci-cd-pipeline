@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'flask-app'
+        REGISTRY = 'docker.io'
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/adhirk09/ci-cd-pipeline.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${REGISTRY}/${IMAGE_NAME}")
+                }
+            }
+        }
+        stage('Test Application') {
+            steps {
+                script {
+                    docker.image("${REGISTRY}/${IMAGE_NAME}").inside {
+                        sh 'pytest'  // Add any testing command if you have unit tests
+                    }
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', 'docker-hub-credentials') {
+                        docker.image("${REGISTRY}/${IMAGE_NAME}").push('latest')
+                    }
+                }
+            }
+        }
+        stage('Deploy Application') {
+            steps {
+                script {
+                    // Deploy using your preferred method, e.g., AWS, Docker Hub, or a Kubernetes cluster.
+                    echo 'Deploying the application...'
+                }
+            }
+        }
+    }
+}
