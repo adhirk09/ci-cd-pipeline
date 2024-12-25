@@ -45,3 +45,11 @@ pipeline {
         }
     }
 }
+stage('Debug') {
+    steps {
+        script {
+            sh 'git status'
+            sh 'git branch -a'
+        }
+    }
+}
