@@ -43,14 +43,14 @@ pipeline {
                 }
             }
         }
-    }
-}
-stage('Debug') {
-    steps {
-        script {
-            sh 'git status'
-            sh 'git branch -a'
+        stage('Debug') {
+            steps {
+                script {
+                    sh 'git status'
+                    sh 'git branch -a'
+                }
+            }
         }
     }
 }
-checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/adhirk09/ci-cd-pipeline.git']]])
+
